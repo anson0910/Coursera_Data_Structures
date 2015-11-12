@@ -25,6 +25,7 @@ public class MarkovTextGeneratorGrader {
 
             gen.train("");
             feedback += "\n** Test 2: Generating text after training on an empty file...";
+            
             try {
                 String s = gen.generateText(20);
                 feedback += "No error thrown. ";
@@ -35,7 +36,7 @@ public class MarkovTextGeneratorGrader {
             String input = "I love cats. I hate dogs. I I I I I I I I I I I I I I I I love cats. I I I I I I I I I I I I I I I I hate dogs. I I I I I I I I I like books. I love love. I am a text generator. I love cats. I love cats. I love cats. I love love love socks.";
             gen.retrain(input);
             String res = gen.generateText(LENGTH);
-
+            
             feedback += "\nGenerator produced: " + res + "\n";
 
             String[] words = res.split("[\\s]+");
@@ -66,9 +67,9 @@ public class MarkovTextGeneratorGrader {
 
             feedback += "\n** Test #7: Requesting zero words...";
             feedback += "Generator generated: " + gen.generateText(0) + ". ";
-
+            
             gen.train("");
-            res = gen.generateText(LENGTH);
+            res = gen.generateText(LENGTH);            
             words = res.split("[\\s]+");
             int i = 0;
             feedback += "\n** Test #8: Running train() on a generator that has already been trained...";
@@ -90,7 +91,7 @@ public class MarkovTextGeneratorGrader {
             PrintWriter f = new PrintWriter("grader_output/module3.part2.out");
             f.println(feedback);
             f.close();
-            return;
+            return;            
         } catch (Exception e) {
             System.out.println("Error during runtime: " + e);
         }
