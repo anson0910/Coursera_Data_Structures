@@ -70,8 +70,11 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	public String generateText(int numWords) {
 	    // TODO: Implement this method
 		
-		if (this.wordList.isEmpty())
-			throw new IllegalStateException("Trying to generate text before training on any text.");
+		if (this.wordList.isEmpty())		{
+			//throw new IllegalStateException("Trying to generate text before training on any text.");
+			this.wordList.add(new ListNode(""));
+			this.wordList.get(0).addNextWord("");
+		}
 		
 		String generatedText = "";
 		String starter = "";
