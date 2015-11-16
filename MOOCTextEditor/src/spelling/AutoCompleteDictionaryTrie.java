@@ -19,7 +19,8 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 
     public AutoCompleteDictionaryTrie()
 	{
-		root = new TrieNode();
+		this.root = new TrieNode();
+		this.size = 0;
 	}
 	
 	
@@ -29,7 +30,38 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+		word = word.toLowerCase();
+		TrieNode curNode = this.root;
+		Character curChar = '\0';
+		int charIdxNoMatch = 0;	// first index of word that doesn't match word in dictionary
+		while (charIdxNoMatch < word.length())	{
+			curChar = word.charAt(charIdxNoMatch);
+			if (curNode.getChild(curChar) == null)
+				break;
+			curNode = curNode.getChild(curChar);
+			charIdxNoMatch++;
+		}
+		
+		// if charIdxNoMatch reaches end of word, it is in dictionary
+		if (charIdxNoMatch == word.length())	{
+			if (curNode.endsWord())
+				return false;
+			else	{
+				// or it is in a node, but not a word yet
+				curNode.setEndsWord(true);
+				this.size++;
+				return true;
+			}
+		}
+		
+		while (charIdxNoMatch < word.length())	{
+			curChar = word.charAt(charIdxNoMatch);
+			curNode = curNode.insert(curChar);			
+			charIdxNoMatch++;
+		}
+		curNode.setEndsWord(true);	// last node corresponds to inserted word
+		this.size++;
+		return true;
 	}
 	
 	/** 
@@ -39,7 +71,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public int size()
 	{
 	    //TODO: Implement this method
-	    return 0;
+	    return this.size;
 	}
 	
 	
@@ -48,7 +80,24 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		return false;
+		if (s.length() == 0)
+			return false;
+		
+		s = s.toLowerCase();
+		TrieNode curNode = this.root;
+		int charIdxNoMatch = 0;	// first index of word that doesn't match word in dictionary
+		
+		while (charIdxNoMatch < s.length())		{
+			Character curChar = s.charAt(charIdxNoMatch);
+			if (curNode.getChild(curChar) == null)
+				return false;
+			curNode = curNode.getChild(curChar);
+			charIdxNoMatch++;
+		}
+		
+		// if charIdxNoMatch reaches over end of word, it is in dictionary
+		return true;
+		
 	}
 
 	/** 
@@ -76,7 +125,43 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
     	 
-         return null;
+    	 int numCompletionsProvided = 0;
+    	 // list of completions
+    	 List<String> predictions = new LinkedList<String>();
+    	 List<TrieNode> queue = new LinkedList<TrieNode>();
+    	 TrieNode stem = new TrieNode();    	 
+    	 prefix = prefix.toLowerCase();
+    	 
+    	 TrieNode curNode = this.root;
+    	 Character curChar = '\0';
+    	 int charIdxNoMatch = 0;
+    	 while (charIdxNoMatch < prefix.length())	{
+    		 curChar = prefix.charAt(charIdxNoMatch);
+    		 if (curNode.getChild(curChar) == null)
+    			 break;
+    		 curNode = curNode.getChild(curChar);
+    		 charIdxNoMatch++;
+    	 }
+		
+		// if charIdxNoMatch doesn't match length of word, it is not in dictionary
+		if (charIdxNoMatch != prefix.length())	
+			return predictions;
+		
+		stem = curNode;
+		queue.add(stem);
+		while ( !queue.isEmpty() && numCompletionsProvided < numCompletions )	{
+			curNode = queue.remove(0);
+			if (curNode.endsWord())	{
+				predictions.add(curNode.getText());
+				numCompletionsProvided++;
+			}
+			// add all children to queue
+			Set<Character> childrenChars = curNode.getValidNextCharacters();
+			for (Character childChar : childrenChars)	
+				queue.add(curNode.getChild(childChar));			
+		}    	 
+    	 
+         return predictions;
      }
 
  	// For debugging
