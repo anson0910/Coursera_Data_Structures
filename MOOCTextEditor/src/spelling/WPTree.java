@@ -21,6 +21,7 @@ public class WPTree implements WordPath {
 	private WPTreeNode root;
 	// used to search for nearby Words
 	private NearbyWords nw; 
+	private static final int THRESHOLD = 10000; 
 	
 	// This constructor is used by the Text Editor Application
 	// You'll need to create your own NearbyWords object here.
@@ -72,7 +73,9 @@ public class WPTree implements WordPath {
 						return childNode.buildPathToRoot();
 					queue.add(childNode);
 				}
-			}			
+			}
+			if (visited.size() > THRESHOLD)
+				break;
 		}	
 		
 	    return null;
