@@ -2,6 +2,7 @@ package basicgraph;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,8 +122,11 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 1
-		return null;
+	    List<Integer> degrees = new ArrayList<Integer>();
+	    for (int i = 0; i < getNumVertices(); i++)
+	        degrees.add(getNeighbors(i).size() + getInNeighbors(i).size());
+	    Collections.sort(degrees, Collections.reverseOrder());
+		return degrees;
 	}
 	
 	/**
@@ -130,7 +134,6 @@ public abstract class Graph {
 	 * @param v The starting vertex
 	 * @return A list of the vertices that can be reached in exactly two hops (by 
 	 * following two edges) from vertex v.
-	 * XXX: Implement in part 2 of week 1 for each subclass of Graph
 	 */
 	public abstract List<Integer> getDistance2(int v); 
 
@@ -228,7 +231,7 @@ public abstract class Graph {
 
 	
 	public static void main (String[] args) {
-		GraphLoader.createIntersectionsFile("data/maps/myucsd.map", "data/intersections/myucsd.intersections");
+		GraphLoader.createIntersectionsFile("data/maps/home.map", "data/intersections/home.intersections");
 		
 
 		// For testing of Part 1 functionality
@@ -261,7 +264,8 @@ public abstract class Graph {
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
-
+		
+		
 
 		
 	}

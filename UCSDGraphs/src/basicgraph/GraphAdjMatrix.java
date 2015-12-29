@@ -98,7 +98,6 @@ public class GraphAdjMatrix extends Graph {
 		return inNeighbors;
 	}
 	
-	//For learners to implement
 	/** 
 	 * Implement the abstract method for finding all 
 	 * vertices reachable by two hops from v.
@@ -108,7 +107,22 @@ public class GraphAdjMatrix extends Graph {
 	 * @return List<Integer> a list of indices of vertices.  
 	 */	
 	public List<Integer> getDistance2(int v) {
-		return null;
+	    List<Integer> twoHops = new ArrayList<Integer>();
+	    
+	    int numVertices = getNumVertices();
+	    int [] neighbors = new int [numVertices];	    
+	    
+	    // get matrix multiplication results for v-th row
+	    for (int i = 0; i < numVertices; i++) {
+	        neighbors[i] = 0;
+	        for (int j = 0; j < numVertices; j++)
+	            neighbors[i] += adjMatrix[v][j] * adjMatrix[j][i];	        
+	        
+	        for (int k = 0; k < neighbors[i]; k++)
+	            twoHops.add(i);
+	    }   
+	    
+		return twoHops;
 	}
 	
 	/**
