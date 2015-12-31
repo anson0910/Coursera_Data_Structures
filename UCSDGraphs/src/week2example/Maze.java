@@ -206,44 +206,43 @@ public class Maze {
 		if (start == null || goal == null) {
 			System.out.println("Start or goal node is null!  No path exists.");
 			return new LinkedList<MazeNode>();
-		}
-
-		HashSet<MazeNode> visited = new HashSet<MazeNode>();
-		Queue<MazeNode> toExplore = new LinkedList<MazeNode>();
+		}	
+		
 		HashMap<MazeNode, MazeNode> parentMap = new HashMap<MazeNode, MazeNode>();
-		toExplore.add(start);
-		boolean found = false;
-		while (!toExplore.isEmpty()) {
-			MazeNode curr = toExplore.remove();
-			if (curr == goal) {
-				found = true;
-				break;
-			}
-			List<MazeNode> neighbors = curr.getNeighbors();
-			ListIterator<MazeNode> it = neighbors.listIterator(neighbors.size());
-			while (it.hasPrevious()) {
-				MazeNode next = it.previous();
-				if (!visited.contains(next)) {
-					visited.add(next);
-					parentMap.put(next, curr);
-					toExplore.add(next);
-				}
-			}
-		}
+		boolean found = bfsSearch(start, goal, parentMap);
 
 		if (!found) {
 			System.out.println("No path exists");
 			return new ArrayList<MazeNode>();
 		}
 		// reconstruct the path
-		LinkedList<MazeNode> path = new LinkedList<MazeNode>();
-		MazeNode curr = goal;
-		while (curr != start) {
-			path.addFirst(curr);
-			curr = parentMap.get(curr);
-		}
-		path.addFirst(start);
-		return path;
+		return constructPath(start, goal, parentMap);
+	}
+	
+	private boolean bfsSearch(MazeNode start, MazeNode goal, 
+	                        HashMap<MazeNode, MazeNode> parentMap) {
+	    HashSet<MazeNode> visited = new HashSet<MazeNode>();
+        Queue<MazeNode> toExplore = new LinkedList<MazeNode>();        
+        toExplore.add(start);
+        boolean found = false;
+        while (!toExplore.isEmpty()) {
+            MazeNode curr = toExplore.remove();
+            if (curr == goal) {
+                found = true;
+                break;
+            }
+            List<MazeNode> neighbors = curr.getNeighbors();
+            ListIterator<MazeNode> it = neighbors.listIterator(neighbors.size());
+            while (it.hasPrevious()) {
+                MazeNode next = it.previous();
+                if (!visited.contains(next)) {
+                    visited.add(next);
+                    parentMap.put(next, curr);
+                    toExplore.add(next);
+                }
+            }
+        }
+	    return found;
 	}
 
 /*	public List<MazeNode> dfsRefactored(int startRow, int startCol, 
