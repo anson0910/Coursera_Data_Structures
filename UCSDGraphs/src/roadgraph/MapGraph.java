@@ -7,7 +7,6 @@
  */
 package roadgraph;
 
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,7 +26,7 @@ import util.GraphLoader;
  *
  */
 public class MapGraph {
-    HashMap<GeographicPoint, List<Edge>> graph;
+    HashMap<GeographicPoint, MapNode> graph;
     int numEdges;	
     
 	/** 
@@ -35,7 +34,7 @@ public class MapGraph {
 	 */
 	public MapGraph()
 	{
-		graph = new HashMap<GeographicPoint, List<Edge>>();
+		graph = new HashMap<GeographicPoint, MapNode>();
 		numEdges = 0;
 	}
 	
@@ -72,7 +71,7 @@ public class MapGraph {
 	 * @return list of neighbors (edges) 
 	 */
 	private List<Edge> getNeighbors(GeographicPoint p) {
-	    return graph.get(p);
+	    return graph.get(p).getNeighbors();
 	}
 	
 	/** Add a node corresponding to an intersection at a Geographic Point
@@ -87,7 +86,7 @@ public class MapGraph {
 		if (location == null || graph.containsKey(location))
 		    return false;
 		
-		graph.put(location, new LinkedList<Edge>());		
+		graph.put(location, new MapNode(location));		
 		return true;
 	}
 	
@@ -110,7 +109,7 @@ public class MapGraph {
 	        throw new IllegalArgumentException();
 	    
 	    // Add edge to corresponding "from" vertex in hash map
-	    graph.get(from).add(new Edge(from, to, roadName, roadType, length));	
+	    graph.get(from).addNeighbor(from, to, roadName, roadType, length);	
 	    numEdges++;
 	}
 	
@@ -179,7 +178,7 @@ public class MapGraph {
         
         while (!toExplore.isEmpty())   {
             GeographicPoint curr = toExplore.remove();
-            nodeSearched.accept(curr);
+            nodeSearched.accept(curr);      // add to visualization tool
             if (curr.equals(goal))  {
                 return true;
             }
