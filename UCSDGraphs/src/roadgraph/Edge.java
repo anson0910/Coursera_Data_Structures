@@ -11,8 +11,8 @@ import geography.GeographicPoint;
  */
 
 public class Edge   {
-    private GeographicPoint startPoint;
-    private GeographicPoint endPoint;
+    private MapNode startPoint;
+    private MapNode endPoint;
     private String roadName;
     private String roadType;
     private double length;
@@ -25,7 +25,7 @@ public class Edge   {
      * @param roadType The type of the road
      * @param length The length of the road, in km
      */
-    public Edge(GeographicPoint startPoint, GeographicPoint endPoint, 
+    public Edge(MapNode startPoint, MapNode endPoint, 
                         String roadName, String roadType, double length)  {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -38,8 +38,16 @@ public class Edge   {
      * Return ending point of edge
      * @return ending point of edge
      */
-    public GeographicPoint getEndPoint()    {
+    public MapNode getEndPoint()    {
         return endPoint;
+    }
+    
+    /**
+     * Return length (weight) of edge
+     * @return length of edge
+     */
+    public double getLength()   {
+        return length;
     }
     
     public int hashCode()   {
