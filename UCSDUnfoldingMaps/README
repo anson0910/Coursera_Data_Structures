@@ -21,6 +21,6 @@ Switch Java Compiler to 1.6 if you get VM problems. (Processing should work with
 
 EXECUTION
 
-Run EarthquakeCityMap.java under module 6 as Java Applet to see final application
+Run EarthquakeCityMap.java under src/module6 as Java Applet to see final application
 
 
