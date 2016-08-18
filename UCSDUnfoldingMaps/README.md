@@ -1,4 +1,4 @@
-![My image](https://github.com/anson0910/Data_Structures/blob/master/UCSDUnfoldingMaps/img/earthquake.jpg)
+![My image](img/earthquake.jpg)
 
 INSTALLATION
 
